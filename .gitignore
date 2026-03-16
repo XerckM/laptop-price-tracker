@@ -47,3 +47,6 @@ venv/
 # Logs
 # -----------------
 *.log
+
+# Worker debug artifacts
+apps/worker/*.html
