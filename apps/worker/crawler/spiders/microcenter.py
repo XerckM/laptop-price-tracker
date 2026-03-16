@@ -15,7 +15,7 @@ class MicrocenterSpider(scrapy.Spider):
         "Referer": "https://www.microcenter.com/",
     }
 
-    def start_requests(self):
+    async def start(self):
         for url in self.start_urls:
             yield scrapy.Request(
                 url=url,
@@ -44,27 +44,36 @@ class MicrocenterSpider(scrapy.Spider):
             price = card.css(".price span::text").get()
 
             item = LaptopOfferItem()
+
             item["retailer_name"] = "Micro Center"
             item["retailer_website"] = "https://www.microcenter.com"
+
             item["brand"] = None
             item["model"] = title.strip() if title else None
             item["sku"] = None
+
             item["cpu"] = None
             item["gpu"] = None
+
             item["ram_gb"] = None
             item["ram_type"] = None
             item["ram_speed_mhz"] = None
+
             item["storage_gb"] = None
             item["storage_type"] = None
             item["storage_interface"] = None
+
             item["screen_size"] = None
             item["resolution"] = None
             item["panel_type"] = None
             item["refresh_rate_hz"] = None
+
             item["os"] = None
             item["description"] = title.strip() if title else None
+
             item["price"] = price.strip() if price else None
             item["currency"] = "USD"
+
             item["url"] = response.urljoin(url) if url else None
             item["in_stock"] = True
 
