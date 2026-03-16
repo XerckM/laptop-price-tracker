@@ -1,4 +1,18 @@
+from decimal import Decimal
+
 from pydantic import BaseModel
+
+
+class OfferResponse(BaseModel):
+    id: int
+    price: Decimal
+    currency: str
+    url: str
+    in_stock: bool
+    retailer_name: str
+
+    class Config:
+        from_attributes = True
 
 
 class ProductBase(BaseModel):
@@ -26,6 +40,7 @@ class ProductBase(BaseModel):
 
 class ProductResponse(ProductBase):
     id: int
+    offers: list[OfferResponse] = []
 
     class Config:
         from_attributes = True

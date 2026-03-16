@@ -1,6 +1,15 @@
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000";
 
+export type Offer = {
+  id: number;
+  price: string;
+  currency: string;
+  url: string;
+  in_stock: boolean;
+  retailer_name: string;
+};
+
 export type Product = {
   id: number;
   brand: string;
@@ -18,6 +27,7 @@ export type Product = {
   panel_type: string | null;
   refresh_rate_hz: number | null;
   os: string | null;
+  offers: Offer[];
 };
 
 export async function getProducts(): Promise<Product[]> {

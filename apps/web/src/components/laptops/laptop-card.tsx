@@ -1,32 +1,46 @@
+import { Product } from "@/lib/api";
+
 type LaptopCardProps = {
-  product: {
-    id: number;
-    brand: string;
-    model: string;
-    cpu: string | null;
-    gpu: string | null;
-    ram_gb: number | null;
-    ram_type: string | null;
-    ram_speed_mhz: number | null;
-    storage_gb: number | null;
-    storage_type: string | null;
-    storage_interface: string | null;
-    screen_size: number | null;
-    resolution: string | null;
-    panel_type: string | null;
-    refresh_rate_hz: number | null;
-    os: string | null;
-  };
+  product: Product;
 };
 
 export default function LaptopCard({ product }: LaptopCardProps) {
+  const lowestOffer =
+    product.offers.length > 0
+      ? [...product.offers].sort(
+          (a, b) => Number(a.price) - Number(b.price)
+        )[0]
+      : null;
+
   return (
-    <div className="rounded-2xl border border-gray-200 p-5 shadow-sm bg-white">
-      <h2 className="text-xl font-semibold">
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+      <h2 className="text-xl font-semibold text-gray-900">
         {product.brand} {product.model}
       </h2>
 
-      <div className="mt-3 space-y-1 text-sm text-gray-700">
+      {lowestOffer ? (
+        <div className="mt-3 rounded-xl bg-green-50 p-3">
+          <p className="text-lg font-bold text-green-700">
+            ${Number(lowestOffer.price).toFixed(2)}
+          </p>
+          <p className="text-sm text-gray-700">
+            {lowestOffer.retailer_name} ·{" "}
+            {lowestOffer.in_stock ? "In Stock" : "Out of Stock"}
+          </p>
+          <a
+            href={lowestOffer.url}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-1 inline-block text-sm font-medium text-blue-600 hover:underline"
+          >
+            View Offer
+          </a>
+        </div>
+      ) : (
+        <p className="mt-3 text-sm text-gray-500">No offers available.</p>
+      )}
+
+      <div className="mt-4 space-y-1 text-sm text-gray-700">
         <p><span className="font-medium">CPU:</span> {product.cpu ?? "N/A"}</p>
         <p><span className="font-medium">GPU:</span> {product.gpu ?? "N/A"}</p>
         <p>
