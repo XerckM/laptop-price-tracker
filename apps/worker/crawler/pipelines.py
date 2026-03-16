@@ -1,19 +1,19 @@
-from decimal import Decimal
-
 from crawler.db import SessionLocal
 
 
 class PostgresPipeline:
-    def process_item(self, item, spider):
+    @classmethod
+    def from_crawler(cls, crawler):
+        pipeline = cls()
+        pipeline.crawler = crawler
+        return pipeline
+
+    def process_item(self, item):
         db = SessionLocal()
 
         try:
-            # For now, just print so we can confirm scraping flow works
-            spider.logger.info(f"Scraped item: {dict(item)}")
-
-            # We will add real DB upsert logic next
+            self.crawler.spider.logger.info(f"Scraped item: {dict(item)}")
             return item
-
         except Exception:
             db.rollback()
             raise

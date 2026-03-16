@@ -6,17 +6,36 @@ from crawler.items import LaptopOfferItem
 class MicrocenterSpider(scrapy.Spider):
     name = "microcenter"
     allowed_domains = ["microcenter.com"]
+
     start_urls = [
         "https://www.microcenter.com/search/search_results.aspx?N=4294967288+4294807523"
     ]
 
+    custom_headers = {
+        "Referer": "https://www.microcenter.com/",
+    }
+
+    def start_requests(self):
+        for url in self.start_urls:
+            yield scrapy.Request(
+                url=url,
+                headers=self.custom_headers,
+                callback=self.parse,
+                dont_filter=True,
+            )
+
     def parse(self, response):
         self.logger.info(f"Fetched {response.url} with status {response.status}")
+
+        if response.status != 200:
+            self.logger.warning(f"Non-200 response received: {response.status}")
+            return
 
         product_cards = response.css("li.product_wrapper")
 
         if not product_cards:
             self.logger.warning("No product cards found. Selector likely needs adjustment.")
+            self.logger.info(response.text[:1500])
             return
 
         for card in product_cards[:5]:
