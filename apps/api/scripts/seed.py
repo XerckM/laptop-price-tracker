@@ -11,13 +11,11 @@ def seed_database() -> None:
     db = SessionLocal()
 
     try:
-        # Prevent duplicate seeding
         existing_product = db.query(Product).first()
         if existing_product:
             print("Seed data already exists. Skipping.")
             return
 
-        # Retailers
         micro_center = Retailer(
             name="Micro Center",
             website="https://www.microcenter.com",
@@ -32,18 +30,22 @@ def seed_database() -> None:
         db.add_all([micro_center, best_buy])
         db.flush()
 
-        # Products
         legion_pro_7i = Product(
             brand="Lenovo",
             model="Legion Pro 7i",
             sku="LEN-LEGION-PRO-7I-5090",
-            gpu="RTX 5090",
             cpu="Core Ultra 9 275HX",
+            gpu="RTX 5090",
             ram_gb=32,
+            ram_type="DDR5",
+            ram_speed_mhz=5600,
             storage_gb=2000,
+            storage_type="SSD",
+            storage_interface="PCIe Gen4",
             screen_size=16.0,
             resolution="2560x1600",
-            panel="IPS",
+            panel_type="IPS",
+            refresh_rate_hz=240,
             os="Windows 11 Pro",
             description="Lenovo Legion Pro 7i high-end gaming laptop",
         )
@@ -52,13 +54,18 @@ def seed_database() -> None:
             brand="ASUS",
             model="ROG Strix SCAR 18",
             sku="ASUS-SCAR-18-5090",
-            gpu="RTX 5090",
             cpu="Core Ultra 9 275HX",
+            gpu="RTX 5090",
             ram_gb=64,
+            ram_type="DDR5",
+            ram_speed_mhz=5600,
             storage_gb=2000,
+            storage_type="SSD",
+            storage_interface="PCIe Gen4",
             screen_size=18.0,
             resolution="2560x1600",
-            panel="Mini-LED",
+            panel_type="Mini-LED",
+            refresh_rate_hz=240,
             os="Windows 11 Pro",
             description="ASUS ROG Strix SCAR 18 flagship gaming laptop",
         )
@@ -66,7 +73,6 @@ def seed_database() -> None:
         db.add_all([legion_pro_7i, scar_18])
         db.flush()
 
-        # Offers
         legion_offer = Offer(
             product_id=legion_pro_7i.id,
             retailer_id=micro_center.id,
@@ -88,7 +94,6 @@ def seed_database() -> None:
         db.add_all([legion_offer, scar_offer])
         db.flush()
 
-        # Price history
         legion_history = PriceHistory(
             offer_id=legion_offer.id,
             price=Decimal("3599.99"),
