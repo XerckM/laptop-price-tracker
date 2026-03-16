@@ -1,26 +1,49 @@
-# Node
-node_modules
-.pnpm-store
-.next
-out
-dist
+# -----------------
+# Node / Next.js
+# -----------------
+node_modules/
+.pnpm-store/
+.next/
+out/
+dist/
+coverage/
 
+# -----------------
 # Python
+# -----------------
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+
+# virtual environments
 .venv/
+venv/
+*/.venv/
+*/venv/
+
+# python tooling
 .pytest_cache/
+.mypy_cache/
 .scrapy/
 
-# Env
+# -----------------
+# Environment files
+# -----------------
 .env
 .env.local
 .env.*.local
 
-# OS / editor
+# -----------------
+# OS / editors
+# -----------------
 .DS_Store
 .vscode/
 .idea/
 
+# -----------------
 # Logs
+# -----------------
 *.log
